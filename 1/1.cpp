@@ -5,20 +5,20 @@
 
 //TODO: Try extra part with recursive function
 using namespace std;
-const string digarr[9][2] = {{"1", "one"},
-                       {"2", "two"},
-                       {"3", "three"},
-                       {"4", "four"},
-                       {"5", "five"},
-                       {"6", "six"},
-                       {"7", "seven"},
-                       {"8", "eight"},
-                       {"9", "nine"}};
+const string digarr[9][2] = {{"o1e", "one"},
+                       {"t2o", "two"},
+                       {"t3e", "three"},
+                       {"f4r", "four"},
+                       {"f5e", "five"},
+                       {"s6x", "six"},
+                       {"s7n", "seven"},
+                       {"e8t", "eight"},
+                       {"n9e", "nine"}};
 int main(){
     fstream file;
 
     //Open file
-    file.open("test.txt", ios::in);
+    file.open("input.txt", ios::in);
     if(!file.is_open()){
         cout << "Error opening file";
         return 1;
@@ -29,8 +29,10 @@ int main(){
     while(getline(file, line)){
         for(int i=0; i<9; i++){
             size_t sub_indx = line.find(digarr[i][1]);
-            if(sub_indx != string::npos)
+            while(sub_indx != string::npos){
                 line.replace(sub_indx, digarr[i][1].length(), digarr[i][0]);
+                sub_indx = line.find(digarr[i][1]);
+            }
             cout << line << endl;
         }
 
