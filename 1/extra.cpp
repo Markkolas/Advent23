@@ -35,7 +35,7 @@ int getFirst(string& s){
             firstIndx = numIndx;
             firstVal = digarr[i][0];
         }
-        else if(wrtIndx < firstIndx && wrtIndx != string::npos){
+        if(wrtIndx < firstIndx && wrtIndx != string::npos){
             firstIndx = wrtIndx;
             firstVal = digarr[i][1];
         }
@@ -55,7 +55,7 @@ int getLast(string& s){
             lastIndx = numIndx;
             lastVal = digarr[i][0];
         }
-        else if(wrtIndx >= lastIndx && wrtIndx != string::npos){
+        if(wrtIndx >= lastIndx && wrtIndx != string::npos){
             lastIndx = wrtIndx;
             lastVal = digarr[i][1];
         }
@@ -79,7 +79,7 @@ int main(){
     while(getline(file, line)){
         //cout << getFirst(line) << getLast(line) << endl;
         if(line.length() > 0)
-            result += getFirst(line)*10+getLast(line);
+            result += 10*getFirst(line)+getLast(line);
     }
 
     cout << result;
