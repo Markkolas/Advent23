@@ -5,7 +5,7 @@
 
 using namespace std;
 
-constexpr unsigned int MAXRED=12, MAXBLUE=13, MAXGREEN=14;
+constexpr int MAXRED=12, MAXBLUE=14, MAXGREEN=13;
 
 bool checkLine(string& samples){
     char * pch;
@@ -13,7 +13,19 @@ bool checkLine(string& samples){
 
     while(pch != NULL){
         string sample = string(pch);
-        cout << sample << endl;
+
+        //Lets use spaces in our favour
+        size_t firstSpaceIndx = sample.find(" ");
+        size_t lastSpaceIndx = sample.rfind(" ");
+
+        int number = stoi(sample.substr(firstSpaceIndx+1, lastSpaceIndx-firstSpaceIndx-1));
+        if((sample.find("red") != string::npos && number > MAXRED) ||
+           (sample.find("blue") != string::npos && number > MAXBLUE) ||
+           (sample.find("green") != string::npos && number > MAXGREEN)){
+            return false;
+        }
+        //cout << sample << endl;
+        pch = strtok(NULL, ",;");
     }
     return true;
 }
@@ -28,11 +40,14 @@ int main(){
         return 1;
     }
 
-    int result, count;
+    int result=0, count=0;
     string line;
     while(getline(file, line)){
         //Games ID are put in order of apparition
-        string samples = line.substr(line.find(':'));
-        checkLine(samples);
+        count++;
+        string samples = line.substr(line.find(':')+1);
+        if(checkLine(samples)) result += count;
     }
+
+    cout << result << endl;
 }
