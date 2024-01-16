@@ -1,6 +1,4 @@
-#include <iostream>
-#include <fstream>
-#include <string>
+#include "../adventbasics.cpp"
 #include <string.h>
 
 using namespace std;
@@ -34,11 +32,9 @@ int main(){
     fstream file;
 
     //Open file
-    file.open("input.txt", ios::in);
-    if(!file.is_open()){
-        cout << "Error opening file";
+
+    if(!adbasic::readInput(file))
         return 1;
-    }
 
     int result=0, count=0;
     string line;
