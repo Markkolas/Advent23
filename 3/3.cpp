@@ -5,9 +5,12 @@ using namespace std;
 int main(){
     string in;
 
-    adbasic::getFromConsole(in);
+    //adbasic::getFromConsole(in);
+    in = adbasic::readTest();
 
-    cout << "\nWill reprint now:\n";
+    cout << "Autodetecting cols... ";
 
-    cout << in;
+    int cols = in.find("\n");
+
+    cout << "Done: " << cols << endl;
 }

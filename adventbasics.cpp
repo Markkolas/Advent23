@@ -1,28 +1,37 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <sstream>
 
 namespace adbasic{
     using namespace std;
 
-    bool readInput(fstream& f){
+    string readInput(){
+        fstream f;
         f.open("input.txt", ios::in);
         if(!f.is_open()){
             cout << "Error opening file";
-            return false;
+            exit(1);
         }
-        else
-            return true;
+
+        stringstream buff;
+        buff << f.rdbuf();
+
+        return buff.str();
     }
 
-    bool readTest(fstream& f){
+    string readTest(){
+        fstream f;
         f.open("test.txt", ios::in);
         if(!f.is_open()){
             cout << "Error opening file";
-            return false;
+            exit(1);
         }
-        else
-            return true;
+
+        stringstream buff;
+        buff << f.rdbuf();
+
+        return buff.str();
     }
 
     void getFromConsole(string& s){
