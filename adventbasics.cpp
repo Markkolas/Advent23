@@ -54,4 +54,12 @@ namespace adbasic{
 
         return;
     }
+
+    void cleanIndents(string& s){
+        size_t i = s.find("\n");
+        while(i != string::npos){
+            s.replace(i,1,"");
+            i = s.find("\n");
+        }
+    }
 }
