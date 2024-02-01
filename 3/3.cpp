@@ -7,33 +7,55 @@ struct Schem{
     string data;
     int files, cols;
 
-    Schem(string s);
-    Schem(string s, int files, int cols): data{s}, files{files}, cols{cols}{}
+    const char invalid = 0;
 
-    char& operator()(int x, int y);
+    struct Point{
+        int p[2];
+        Point(int y, int x): p{y,x}{}
+    };
+
+    Schem(string s);
+
+    char& operator[](Point p){return data[pts(p)];}
     char& operator[](size_t pos){return data[pos];}
+
+    Point stp(size_t pos); //serial to pararel
+    size_t pts(Point p); //pararel to serial
+
+    char getSafely(int y, int x);
+
 };
+
+//TODO: Securize methods
+Schem::Point Schem::stp(size_t pos){
+    Point point(pos/cols, pos%cols);
+
+    return point;
+}
+
+size_t Schem::pts(Point p){
+    return p.p[0]*cols+p.p[1];
+}
+
+char Schem::getSafely(int y, int x){
+    if(x < 0 || x > cols - 1 || y < 0 || y > files - 1) return 0;
+
+    return data[y*cols+x];
+}
 
 Schem::Schem(string s){
     cout << "Autodetecting cols... ";
-    cols = s.find("\n");
+    cols = s.find("\n")+1;
     cout << "Done: " << cols << endl;
 
     cout << "Cleaning indents...";
-    adbasic::cleanIndents(s);
+    adbasic::cleanIndents(s, ".");
     cout << " Done!" << endl;
 
     files = s.size()/cols;
     cout << "Schem is size: " << files << "x" << cols << endl;
 
     data = s;
-}
-
-char& Schem::operator()(int y, int x){
-    if(x < 0) x = 0;
-    if(y < 0) y = 0;
-
-    return data[y*cols+x];
 }
 
 struct Part{
@@ -49,12 +71,24 @@ struct Part{
 
 };
 
-int main(){
+int main(int argc, char *argv[]){
     string in;
     list<Part> numlist;
 
-    //adbasic::getFromConsole(in);
-    in = adbasic::readTest();
+    if(*argv[1] == '0')
+        adbasic::getFromConsole(in);
+    else if(*argv[1] == '1')
+        in = adbasic::readTest();
+    else if(*argv[1] == '2')
+        in = adbasic::readInput();
+    else{
+        cout << "Specify argument.\n"
+             << "0: From console\n"
+             << "1: From 'test.txt' file\n"
+             << "2: From 'input.txt' file" << endl;
+
+        return 0;
+    }
 
     Schem schem(in);
 
@@ -72,14 +106,39 @@ int main(){
         }
     }
 
+    int result = 0;
     for(list<Part>::iterator it=numlist.begin(); it != numlist.end(); ++it){
         cout << "Num: " << (*it).num
              << "; Init indx: " << (*it).i_indx
              << "; End indx: " << (*it).e_indx << endl;
+
+        Schem::Point left = schem.stp((*it).i_indx);
+        Schem::Point right = schem.stp((*it).e_indx);
+
+        cout << "Checking: " << (*it).num << endl;
+        if(left.p[0] != right.p[0]){
+            cout << "Something is very odd!" << endl;
+            exit(0);
+        }
+
+        for(int y = left.p[0]-1; y <= left.p[0]+1; y++){
+            bool issymb = false;
+            for(int x = left.p[1]-1; x <= right.p[1]+1; x++){
+                const char c = schem.getSafely(y, x);
+                if(!((c >= 48 && c <= 57) || c == 46) && c != 0){
+                    //cout << "Has symbol!: " << c << endl;
+                    issymb = true;
+                    break;
+                }
+            }
+
+            if(issymb){
+                result += (*it).num;
+                break;
+            }
+        }
     }
 
-    cout << schem(9,0) << endl;
-    cout << schem(9,1) << endl;
-    cout << schem(9,2) << endl;
-    cout << schem(9,3) << endl;
+    cout << result << endl;
+    return 0;
 }

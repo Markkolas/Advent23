@@ -55,10 +55,10 @@ namespace adbasic{
         return;
     }
 
-    void cleanIndents(string& s){
+    void cleanIndents(string& s, string r){
         size_t i = s.find("\n");
         while(i != string::npos){
-            s.replace(i,1,"");
+            s.replace(i,1,r);
             i = s.find("\n");
         }
     }
