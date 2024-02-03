@@ -83,6 +83,12 @@ struct StarPart:Part{
     StarPart(Part part, Schem::Point p): Part{part}, star_p{p}{};
 };
 
+struct GearPair{
+    StarPart pair[2];
+
+    GearPair(StarPart part1, StarPart part2): pair{part1, part2}{}
+};
+
 int main(int argc, char *argv[]){
     string in;
     list<Part> numlist;
@@ -152,10 +158,55 @@ int main(int argc, char *argv[]){
             }
         }
     }
+
     //Check from first to last. If exactly two numbers with same star
     //are found, multiply them.
     //End iteration by deleting the items with same star.
+    cout << "Detecting gears..." << endl;
+    list<GearPair> gpairs;
+    list<Schem::Point> points_checked;
 
+    for(list<StarPart>::iterator it=spart_list.begin();
+        it != spart_list.end(); ++it){
+
+        StarPart originp(*it);
+        bool alredy_checked = false;
+
+        for(list<Schem::Point>::iterator jt = points_checked.begin();
+            jt != points_checked.end(); ++jt){
+            if(originp.star_p==*jt){
+                alredy_checked = true;
+                break;
+            }
+        }
+
+        list<StarPart> parts_to_check = {originp};
+
+        list<StarPart>::iterator jt(it);
+        jt++;
+        while(jt != spart_list.end() && !(alredy_checked)){
+            StarPart compp(*jt);
+
+            if((originp.star_p == compp.star_p)){
+                parts_to_check.push_back(compp);
+            }
+
+            jt++;
+        }
+
+        if(parts_to_check.size()==2){
+            GearPair pair{parts_to_check.front(), parts_to_check.back()};
+            gpairs.push_back(pair);
+        }
+    }
+
+    for(list<GearPair>::iterator it = gpairs.begin();
+        it != gpairs.end(); ++it){
+        cout << "Pair: (" << (*it).pair[0].num << ","
+             << (*it).pair[1].num << ") has a gear!" << endl;
+
+        result += (*it).pair[0].num * (*it).pair[1].num;
+    }
 
     cout << result << endl;
     return 0;
