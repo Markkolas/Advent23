@@ -12,6 +12,12 @@ struct Schem{
     struct Point{
         int p[2];
         Point(int y, int x): p{y,x}{}
+
+        inline bool operator==(const Point& other){
+            return (p[0] == other.p[0]) && (p[1] == other.p[1]);
+        }
+
+        inline bool operator!=(const Point& other){return !(*this==other);}
     };
 
     Schem(string s);
@@ -71,6 +77,12 @@ struct Part{
 
 };
 
+struct StarPart:Part{
+    Schem::Point star_p;
+
+    StarPart(Part part, Schem::Point p): Part{part}, star_p{p}{};
+};
+
 int main(int argc, char *argv[]){
     string in;
     list<Part> numlist;
@@ -112,6 +124,8 @@ int main(int argc, char *argv[]){
     }
 
     int result = 0;
+    list<StarPart> spart_list;
+    cout << "Detecting numbers with stars..." << endl;
     for(list<Part>::iterator it=numlist.begin();
         it != numlist.end(); ++it){
         // cout << "Num: " << (*it).num
@@ -128,22 +142,59 @@ int main(int argc, char *argv[]){
         }
 
         for(int y = left.p[0]-1; y <= left.p[0]+1; y++){
-            bool issymb = false;
             for(int x = left.p[1]-1; x <= right.p[1]+1; x++){
                 const char c = schem.getSafely(y, x);
-                if(!((c >= 48 && c <= 57) || c == 46) && c != 0){
-                    //cout << "Has symbol!: " << c << endl;
-                    issymb = true;
-                    break;
+                if(c==42){
+                    //cout << (*it).num << " has a star!" << endl;
+                    Schem::Point spoint(y,x);
+                    spart_list.push_back(StarPart(*it, spoint));
                 }
-            }
-
-            if(issymb){
-                result += (*it).num;
-                break;
             }
         }
     }
+
+    list<list<StarPart>> paired_by_gear_list;
+    list<StarPart> aux_list;
+    Schem::Point prev_point(-1,-1);//Initial impossible value
+
+    cout << "Detecting numbers with gears..." << endl;
+    for(list<StarPart>::iterator it=spart_list.begin();
+        it != spart_list.end(); ++it){
+        StarPart spart = *it;
+
+        if(spart.star_p == prev_point){
+            aux_list.push_back(spart);
+        }
+        else{
+            if(aux_list.size()==2)
+                paired_by_gear_list.push_back(aux_list);
+
+            aux_list.clear();
+            aux_list.push_back(spart);
+        }
+
+        prev_point = (*it).star_p;
+    }
+
+    //Another final comprobation just in case the last two values
+    //are related to a gear
+    if(aux_list.size()==2)
+        paired_by_gear_list.push_back(aux_list);
+
+    cout << "Calculating final results..." << endl;
+    for(list<list<StarPart>>::iterator it=paired_by_gear_list.begin();
+        it != paired_by_gear_list.end(); ++it){
+        if((*it).size() != 2){
+            cout << "OOOOPs, something went very wrong!" << endl;
+            return 0;
+        }
+
+        // cout << (*it).front().num << " and " << (*it).back().num
+        //      << " have a gear in common!" << endl;
+
+        result += (*it).front().num * (*it).back().num;
+    }
+
 
     cout << result << endl;
     return 0;
