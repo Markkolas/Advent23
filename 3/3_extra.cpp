@@ -152,48 +152,9 @@ int main(int argc, char *argv[]){
             }
         }
     }
-
-    list<list<StarPart>> paired_by_gear_list;
-    list<StarPart> aux_list;
-    Schem::Point prev_point(-1,-1);//Initial impossible value
-
-    cout << "Detecting numbers with gears..." << endl;
-    for(list<StarPart>::iterator it=spart_list.begin();
-        it != spart_list.end(); ++it){
-        StarPart spart = *it;
-
-        if(spart.star_p == prev_point){
-            aux_list.push_back(spart);
-        }
-        else{
-            if(aux_list.size()==2)
-                paired_by_gear_list.push_back(aux_list);
-
-            aux_list.clear();
-            aux_list.push_back(spart);
-        }
-
-        prev_point = (*it).star_p;
-    }
-
-    //Another final comprobation just in case the last two values
-    //are related to a gear
-    if(aux_list.size()==2)
-        paired_by_gear_list.push_back(aux_list);
-
-    cout << "Calculating final results..." << endl;
-    for(list<list<StarPart>>::iterator it=paired_by_gear_list.begin();
-        it != paired_by_gear_list.end(); ++it){
-        if((*it).size() != 2){
-            cout << "OOOOPs, something went very wrong!" << endl;
-            return 0;
-        }
-
-        // cout << (*it).front().num << " and " << (*it).back().num
-        //      << " have a gear in common!" << endl;
-
-        result += (*it).front().num * (*it).back().num;
-    }
+    //Check from first to last. If exactly two numbers with same star
+    //are found, multiply them.
+    //End iteration by deleting the items with same star.
 
 
     cout << result << endl;
