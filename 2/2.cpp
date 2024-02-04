@@ -1,4 +1,4 @@
-#include "../adventbasics.cpp"
+#include "../adventbasics.h"
 #include <string.h>
 
 using namespace std;

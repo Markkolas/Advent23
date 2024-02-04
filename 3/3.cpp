@@ -1,75 +1,8 @@
-#include "../adventbasics.cpp"
+#include "../adventbasics.h"
+#include "schem.h"
 #include <list>
 
 using namespace std;
-
-struct Schem{
-    string data;
-    int files, cols;
-
-    const char invalid = 0;
-
-    struct Point{
-        int p[2];
-        Point(int y, int x): p{y,x}{}
-    };
-
-    Schem(string s);
-
-    char& operator[](Point p){return data[pts(p)];}
-    char& operator[](size_t pos){return data[pos];}
-
-    Point stp(size_t pos); //serial to pararel
-    size_t pts(Point p); //pararel to serial
-
-    char getSafely(int y, int x);
-
-};
-
-//TODO: Securize methods
-Schem::Point Schem::stp(size_t pos){
-    Point point(pos/cols, pos%cols);
-
-    return point;
-}
-
-size_t Schem::pts(Point p){
-    return p.p[0]*cols+p.p[1];
-}
-
-char Schem::getSafely(int y, int x){
-    if(x < 0 || x > cols - 1 || y < 0 || y > files - 1) return 0;
-
-    return data[y*cols+x];
-}
-
-Schem::Schem(string s){
-    cout << "Autodetecting cols... ";
-    cols = s.find("\n")+1;
-    cout << "Done: " << cols << endl;
-
-    cout << "Cleaning indents...";
-    adbasic::cleanIndents(s, ".");
-    cout << " Done!" << endl;
-
-    files = s.size()/cols;
-    cout << "Schem is size: " << files << "x" << cols << endl;
-
-    data = s;
-}
-
-struct Part{
-    int num;
-    size_t i_indx, e_indx;
-
-    Part(){}
-    Part(int initnum): num{initnum}{}
-    Part(int initnum, size_t i, size_t e): Part(initnum){
-        i_indx = i;
-        e_indx = e;
-    }
-
-};
 
 int main(int argc, char *argv[]){
     string in;
