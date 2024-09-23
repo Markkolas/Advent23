@@ -43,9 +43,13 @@ int main(int argc, char *argv[]){
     int n_lines = getNumberLines(in);
     string win_numbers_list[n_lines];
     string my_numbers_list[n_lines];
+    string line;
 
-    for(int i = 0; i < n_lines; i++){
+    line = in.substr(LINE_HEADER_LEN, in.find('\n')-LINE_HEADER_LEN);
+    cout << line << endl;
 
-    }
+    // for(int i = 0; i < n_lines; i++){
+
+    // }
 
 }
