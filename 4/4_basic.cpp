@@ -1,4 +1,5 @@
 #include "../adventbasics.h"
+#include <math.h>
 
 const int WIN_COLS = 10;
 const int MY_COLS = 25;
@@ -16,6 +17,35 @@ int getNumberLines(string & s){
     }
 
     return n_lines;
+}
+
+void stoiNumbersBySpaces(string & s, int num_list[], int n_numbers){
+    int index_of_next_space = 0, index_of_prev_space = 0, num_index = 0;
+    string s_num;
+
+    if(s.back() != ' ')
+        s = s+" ";
+
+    //cout << "Converting: " << s << endl;
+
+    index_of_next_space = s.find(' ');
+
+    if(!index_of_next_space){
+        index_of_prev_space = index_of_next_space;
+        index_of_next_space = s.find(' ');
+    }
+
+    while(num_index < n_numbers){
+        if(index_of_next_space - index_of_prev_space > 1){
+            //Dont get two contiguous spaces
+            //cout << "Converting index:" << num_index++ << endl;
+            num_list[num_index++] = stoi(s.substr(index_of_prev_space, index_of_next_space));
+        }
+
+        index_of_prev_space = index_of_next_space;
+        index_of_next_space = s.find(' ', index_of_next_space + 1);
+    }
+
 }
 
 int main(int argc, char *argv[]){
@@ -41,15 +71,59 @@ int main(int argc, char *argv[]){
     }
 
     int n_lines = getNumberLines(in);
-    string win_numbers_list[n_lines];
-    string my_numbers_list[n_lines];
+    int win_num_list[n_lines][WIN_COLS], my_num_list[n_lines][MY_COLS];
     string line;
+    string win_numbers, my_numbers;
+    int prev_ret = 0, next_ret = 0;
 
-    line = in.substr(LINE_HEADER_LEN, in.find('\n')-LINE_HEADER_LEN);
-    cout << line << endl;
+    if(in.back() != '\n')
+        in = in + "\n";
 
+    next_ret = in.find('\n');
+
+    for(int y = 0; y < n_lines; y++){
+        line = in.substr(prev_ret+LINE_HEADER_LEN, next_ret-LINE_HEADER_LEN);
+        win_numbers = line.substr(0, line.find('|'));
+        my_numbers = line.substr(line.find('|')+2, string::npos);
+
+        stoiNumbersBySpaces(win_numbers, win_num_list[y], WIN_COLS);
+        stoiNumbersBySpaces(my_numbers, my_num_list[y], MY_COLS);
+
+        prev_ret = next_ret;
+        next_ret = in.find('\n', next_ret+1);
+    }
+
+    // cout << "Printing win numbers..." << endl;
     // for(int i = 0; i < n_lines; i++){
+    //     for(int v = 0; v < WIN_COLS; v++){
+    //        cout << win_num_list[i][v] << " ";
+    //     }
 
+    //     cout << endl;
     // }
 
+    // cout << "Printing my numbers..." << endl;
+    // for(int i = 0; i < n_lines; i++){
+    //     for(int v = 0; v < MY_COLS; v++){
+    //         cout << my_num_list[i][v] << " ";
+    //     }
+
+    //     cout << endl;
+    // }
+
+    int result = 0;
+    for(int i = 0; i < n_lines; i++){
+        int line_points_exp = 0;
+        for(int xw = 0; xw < WIN_COLS; xw++){
+            for(int xm = 0; xm < MY_COLS; xm++){
+                if(win_num_list[i][xw] == my_num_list[i][xm]){
+                    line_points_exp++;
+                    break;
+                }
+            }
+        }
+        result += pow(2, line_points_exp-1); //0.5 is floored to 0 in int conversion
+    }
+
+    cout << "Result is: " << result << endl;
 }
