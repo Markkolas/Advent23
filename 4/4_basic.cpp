@@ -7,46 +7,6 @@ const int LINE_HEADER_LEN = 10;
 
 using namespace std;
 
-int getNumberLines(string & s){
-
-    int n_lines = 0;
-
-    for(size_t i = 0; i < s.size(); i++){
-        if(s[i] == '\n')
-            n_lines++;
-    }
-
-    return n_lines;
-}
-
-void stoiNumbersBySpaces(string & s, int num_list[], int n_numbers){
-    int index_of_next_space = 0, index_of_prev_space = 0, num_index = 0;
-    string s_num;
-
-    if(s.back() != ' ')
-        s = s+" ";
-
-    //cout << "Converting: " << s << endl;
-
-    index_of_next_space = s.find(' ');
-
-    if(!index_of_next_space){
-        index_of_prev_space = index_of_next_space;
-        index_of_next_space = s.find(' ');
-    }
-
-    while(num_index < n_numbers){
-        if(index_of_next_space - index_of_prev_space > 1){
-            //Dont get two contiguous spaces
-            //cout << "Converting index:" << num_index++ << endl;
-            num_list[num_index++] = stoi(s.substr(index_of_prev_space, index_of_next_space));
-        }
-
-        index_of_prev_space = index_of_next_space;
-        index_of_next_space = s.find(' ', index_of_next_space + 1);
-    }
-
-}
 
 int main(int argc, char *argv[]){
     string in;
@@ -70,7 +30,7 @@ int main(int argc, char *argv[]){
         return 0;
     }
 
-    int n_lines = getNumberLines(in);
+    int n_lines = adbasic::getNumberLines(in);
     int win_num_list[n_lines][WIN_COLS], my_num_list[n_lines][MY_COLS];
     string line;
     string win_numbers, my_numbers;
@@ -86,8 +46,8 @@ int main(int argc, char *argv[]){
         win_numbers = line.substr(0, line.find('|'));
         my_numbers = line.substr(line.find('|')+2, string::npos);
 
-        stoiNumbersBySpaces(win_numbers, win_num_list[y], WIN_COLS);
-        stoiNumbersBySpaces(my_numbers, my_num_list[y], MY_COLS);
+        adbasic::stoiNumbersBySpaces(win_numbers, win_num_list[y], WIN_COLS);
+        adbasic::stoiNumbersBySpaces(my_numbers, my_num_list[y], MY_COLS);
 
         prev_ret = next_ret;
         next_ret = in.find('\n', next_ret+1);

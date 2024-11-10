@@ -51,7 +51,19 @@ humidity-to-location map:
 #+end_quote
 
 * Pseudocodigo
-1. Cargar datos como una lista de arrays 2D
-2. Recorrer lista en orden, para cada elemento:
-   1. Para cada elemento origen
-      1.
+1. Cargar datos
+   A. Cada mapa es un lista de arrays de 3 elementos
+   B. Los datos se pueden montar como una lista de listas de arrays
+2. for each mapa do
+   1. for each valor origen do
+      1. for each array en lista do
+         mapeado = 0
+         1. if (valor >= arr[1]) || (valor <= arr[1]+arr[2]-1) then
+            1. valor_destino = valor + arr[0] - arr[1] //mapeo
+               mapeado = 1
+               break
+
+      2. if mapeado == 0 then
+         valor_destino = valor
+
+3. min(valor_destino[])

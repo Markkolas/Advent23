@@ -58,3 +58,45 @@ void adbasic::cleanIndents(string& s, string r){
         i = s.find("\n");
     }
 }
+
+int adbasic::getNumberLines(string & s){
+
+    int n_lines = 0;
+
+    for(size_t i = 0; i < s.size(); i++){
+        if(s[i] == '\n')
+            n_lines++;
+    }
+
+    return n_lines;
+}
+
+void adbasic::stoiNumbersBySpaces(string & s, int num_list[], int n_numbers){
+    int index_of_next_space = 0, index_of_prev_space = 0, num_index = 0;
+    string s_num;
+
+    if(s.back() != ' ')
+        s = s+" ";
+
+    //cout << "Converting: " << s << endl;
+
+    index_of_next_space = s.find(' ');
+
+    if(!index_of_next_space){
+        index_of_prev_space = index_of_next_space;
+        index_of_next_space = s.find(' ', index_of_prev_space+1);
+    }
+
+    while(num_index < n_numbers){
+        if(index_of_next_space - index_of_prev_space > 1){
+            //Dont get two contiguous spaces
+            //cout << "Converting index:" << num_index++ << endl;
+            //cout << s.substr(index_of_prev_space, index_of_next_space) << endl;
+            num_list[num_index++] = stoi(s.substr(index_of_prev_space, index_of_next_space));
+        }
+
+        index_of_prev_space = index_of_next_space;
+        index_of_next_space = s.find(' ', index_of_next_space + 1);
+    }
+
+}
