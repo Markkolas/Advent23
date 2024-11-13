@@ -71,6 +71,30 @@ int adbasic::getNumberLines(string & s){
     return n_lines;
 }
 
+void adbasic::textToStrarr(string & s, string arr[], int arrsize, char separator){
+    int prev_occ = 0, next_occ = 0;
+
+    if(arrsize <= 0){
+        cout << "Array size must be above 0!" << endl;
+        return;
+    }
+
+    next_occ = s.find(separator);
+
+    arr[0] = s.substr(0, next_occ);
+    cout << arr[0];
+
+    prev_occ = next_occ;
+    next_occ = s.find(separator, prev_occ+1);
+
+    for(int i = 1; i < arrsize; i++){
+        arr[i] = s.substr(prev_occ+1, next_occ-prev_occ-1);
+        //cout << arr[i];
+        prev_occ = next_occ;
+        next_occ = s.find(separator, prev_occ+1);
+    }
+}
+
 void adbasic::stoiNumbersBySpaces(string & s, int num_list[], int n_numbers){
     int index_of_next_space = 0, index_of_prev_space = 0, num_index = 0;
     string s_num;
