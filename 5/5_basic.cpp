@@ -1,4 +1,5 @@
 #include <list>
+#include <array>
 
 #include "../adventbasics.h"
 
@@ -10,7 +11,7 @@ using MapList = std::list<Map<T>>;
 
 const int N_ORIGIN_SEEDS = 4;
 const int N_COLS_IN_MAP = 3;
-MapList<int[N_COLS_IN_MAP]> map_list;
+MapList<std::array<int, N_COLS_IN_MAP>> map_list;
 
 int main(int argc, char *argv[]){
     using namespace std;
@@ -38,6 +39,9 @@ int main(int argc, char *argv[]){
     if(in.back() != '\n')
         in = in + "\n";
 
+    //Need one more carrier return to define the last map
+    in.append("\n");
+
     int n_lines = adbasic::getNumberLines(in);
     int colon_pos = 0;
     int org_values[N_ORIGIN_SEEDS], dest_values[N_ORIGIN_SEEDS];
@@ -59,10 +63,10 @@ int main(int argc, char *argv[]){
     }
 
     bool rding_map = false;
-    int val_arr[N_COLS_IN_MAP];
-    Map<int[N_COLS_IN_MAP]> map;
+    array<int, N_COLS_IN_MAP> arrLine;
+    Map<array<int, N_COLS_IN_MAP>> map;
     for(int i = 1; i < n_lines; i++){
-        //cout << lines[i] << endl;
+        cout << "Reading: " << lines[i] << endl;
         if(lines[i].find("map") != string::npos){ //start of map
             rding_map = true;
             map.clear();
@@ -73,16 +77,15 @@ int main(int argc, char *argv[]){
                map_list.push_back(map);
             }
             else{
-                adbasic::stoiNumbersBySpaces(lines[i], val_arr, N_COLS_IN_MAP);
-                map.push_back(val_arr);
+                adbasic::stoiNumbersBySpaces<int, N_COLS_IN_MAP>(lines[i], arrLine);
+                map.push_back(arrLine);
             }
         }
     }
-
-    for(MapList<int[N_COLS_IN_MAP]>::iterator iit=map_list.begin(); iit != map_list.end(); ++iit){
+    for(MapList<array<int,N_COLS_IN_MAP>>::iterator iit=map_list.begin(); iit != map_list.end(); ++iit){
         cout << "A map" << endl;
-        for(Map<int[N_COLS_IN_MAP]>::iterator it=(*iit).begin(); it != (*iit).end(); ++it){
-            cout << *it << endl;
+        for(Map<array<int,N_COLS_IN_MAP>>::iterator it=(*iit).begin(); it != (*iit).end(); ++it){
+            cout << (*it)[0] << " " << (*it)[1] << " " << (*it)[2] << endl;
         }
         cout << "Map finished" << endl;
     }
