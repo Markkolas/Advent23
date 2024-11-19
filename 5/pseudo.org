@@ -58,7 +58,7 @@ humidity-to-location map:
    1. for each valor origen do
       1. for each array en lista do
          mapeado = 0
-         1. if (valor >= arr[1]) || (valor <= arr[1]+arr[2]-1) then
+         1. if (valor >= arr[1]) && (valor <= arr[1]+arr[2]-1) then
             1. valor_destino = valor + arr[0] - arr[1] //mapeo
                mapeado = 1
                break

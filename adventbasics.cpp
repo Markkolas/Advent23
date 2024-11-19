@@ -82,7 +82,7 @@ void adbasic::textToStrarr(string & s, string arr[], int arrsize, char separator
     next_occ = s.find(separator);
 
     arr[0] = s.substr(0, next_occ);
-    cout << arr[0];
+    //cout << arr[0];
 
     prev_occ = next_occ;
     next_occ = s.find(separator, prev_occ+1);
@@ -104,7 +104,7 @@ void adbasic::stoiNumbersBySpaces(string & s, int num_list[], int n_numbers){
     if(s.back() != ' ')
         s = s+" ";
 
-    //cout << "Converting: " << s << endl;
+    cout << "Converting: " << s << endl;
 
     index_of_next_space = s.find(' ');
 

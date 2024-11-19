@@ -44,7 +44,7 @@ void adbasic::stoiNumbersBySpaces(std::string & s, std::array<T,N> & num_list){
         if(index_of_next_space - index_of_prev_space >= 1){
             //Dont get two contiguous spaces
             //cout << "Converting index:" << num_index++ << endl;
-            //cout << s.substr(index_of_prev_space, index_of_next_space) << endl;
+            cout << s.substr(index_of_prev_space, index_of_next_space) << endl;
             //cout << "Prev space at: " << index_of_prev_space << endl;
             //cout << "Next space at: " << index_of_next_space << endl;
             num_list[num_index++] = stoi(s.substr(index_of_prev_space, index_of_next_space));
