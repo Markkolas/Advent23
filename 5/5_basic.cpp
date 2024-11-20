@@ -9,16 +9,16 @@ using Map = std::list<T>;
 template<typename T>
 using MapList = std::list<Map<T>>;
 
-const int N_ORIGIN_SEEDS = 4;
+const int N_ORIGIN_SEEDS = 20;
 const int N_COLS_IN_MAP = 3;
-MapList<std::array<int, N_COLS_IN_MAP>> map_list;
+MapList<std::array<long int, N_COLS_IN_MAP>> map_list;
 
-void updateValues(int vals[N_ORIGIN_SEEDS],
-                  Map<std::array<int, N_COLS_IN_MAP>> & map){
+void updateValues(long int vals[N_ORIGIN_SEEDS],
+                  Map<std::array<long int, N_COLS_IN_MAP>> & map){
     using namespace std;
     for(int i = 0; i < N_ORIGIN_SEEDS; i++){
         bool mapped = false;
-        for(Map<array<int,N_COLS_IN_MAP>>::iterator it=map.begin(); it != map.end(); ++it){
+        for(Map<array<long int,N_COLS_IN_MAP>>::iterator it=map.begin(); it != map.end(); ++it){
             //cout << (*it)[0] << " " << (*it)[1] << " " << (*it)[2] << endl;
             int org_val = vals[i];
             if(org_val >= (*it)[1] && org_val <= (*it)[1] + (*it)[2] -1){
@@ -63,7 +63,7 @@ int main(int argc, char *argv[]){
 
     int n_lines = adbasic::getNumberLines(in);
     int colon_pos = 0;
-    int values[N_ORIGIN_SEEDS];
+    long int values[N_ORIGIN_SEEDS];
 
     string lines[n_lines];
 
@@ -75,12 +75,12 @@ int main(int argc, char *argv[]){
     //First line are the seeds
     // line = in.substr(next_colon+1, next_ret-next_colon);
     string seeds_line = lines[0].substr(colon_pos+1, in.find('\n')-colon_pos);
-    adbasic::stoiNumbersBySpaces(seeds_line, values, N_ORIGIN_SEEDS);
+    adbasic::stolNumbersBySpaces(seeds_line, values, N_ORIGIN_SEEDS);
 
     //Build map list
     bool rding_map = false;
-    array<int, N_COLS_IN_MAP> arrLine;
-    Map<array<int, N_COLS_IN_MAP>> map;
+    array<long int, N_COLS_IN_MAP> arrLine;
+    Map<array<long int, N_COLS_IN_MAP>> map;
     for(int i = 1; i < n_lines; i++){
         //cout << "Reading: " << lines[i] << endl;
         if(lines[i].find("map") != string::npos){ //start of map
@@ -93,13 +93,13 @@ int main(int argc, char *argv[]){
                map_list.push_back(map);
             }
             else{
-                adbasic::stoiNumbersBySpaces<int, N_COLS_IN_MAP>(lines[i], arrLine);
+                adbasic::stolNumbersBySpaces<N_COLS_IN_MAP>(lines[i], arrLine);
                 map.push_back(arrLine);
             }
         }
     }
 
-    for(MapList<array<int,N_COLS_IN_MAP>>::iterator iit=map_list.begin(); iit != map_list.end(); ++iit){
+    for(MapList<array<long int,N_COLS_IN_MAP>>::iterator iit=map_list.begin(); iit != map_list.end(); ++iit){
         cout << "Processing map..." << endl;
 
         updateValues(values, *iit);
@@ -107,11 +107,13 @@ int main(int argc, char *argv[]){
         cout << "Map finished" << endl;
     }
 
-    cout << "Final values: " << endl;
-    for(int i = 0; i < N_ORIGIN_SEEDS; i++){
-        cout << values[i] << " ";
+    cout << "Finding minimum... " << endl;
+    long int min = values[0];
+    for(int i = 1; i < N_ORIGIN_SEEDS; i++){
+        if(values[i] < min)
+            min = values[i];
     }
-    cout << endl;
+    cout << min << endl;
 
     return 0;
 }
