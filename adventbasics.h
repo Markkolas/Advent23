@@ -44,7 +44,7 @@ void adbasic::stolNumbersBySpaces(std::string & s, std::array<long int,N> & num_
         if(len > 0){
             //Dont get two contiguous spaces
             //cout << "Converting index:" << num_index++ << endl;
-            cout << s.substr(index_of_prev_space+1, len) << endl;
+            //cout << s.substr(index_of_prev_space+1, len) << endl;
             //cout << "Prev space at: " << index_of_prev_space << endl;
             //cout << "Next space at: " << index_of_next_space << endl;
             num_list[num_index++] = stol(s.substr(index_of_prev_space+1, len));
