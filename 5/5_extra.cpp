@@ -17,19 +17,31 @@ void updateValues(long int vals[N_ORIGIN_SEEDS],
                   Map<std::array<long int, N_COLS_IN_MAP>> & map){
     using namespace std;
     for(int i = 0; i < N_ORIGIN_SEEDS; i++){
-        bool mapped = false;
         for(Map<array<long int,N_COLS_IN_MAP>>::iterator it=map.begin(); it != map.end(); ++it){
             //cout << (*it)[0] << " " << (*it)[1] << " " << (*it)[2] << endl;
-            int org_val = vals[i];
+            long int org_val = vals[i];
             if(org_val >= (*it)[1] && org_val <= (*it)[1] + (*it)[2] -1){
                 vals[i] = org_val + (*it)[0] - (*it)[1]; //mapping
                 cout << org_val << " -->> " << vals[i] << endl;;
-                mapped = true;
                 break;
             }
         }
     }
     return;
+}
+
+long int updateValue(long int val, Map<std::array<long int, N_COLS_IN_MAP>> & map){
+    using namespace std;
+    long int dest_val = val;
+    for(Map<array<long int,N_COLS_IN_MAP>>::iterator it=map.begin(); it != map.end(); ++it){
+        //cout << (*it)[0] << " " << (*it)[1] << " " << (*it)[2] << endl;
+        if(val >= (*it)[1] && val <= (*it)[1] + (*it)[2] - 1){
+            dest_val = val + (*it)[0] - (*it)[1]; //mapping
+            //cout << val << " -->> " << dest_val << endl;;
+            break;
+        }
+    }
+    return dest_val;
 }
 
 int main(int argc, char *argv[]){
@@ -98,20 +110,37 @@ int main(int argc, char *argv[]){
             }
         }
     }
+    //////////////////
 
-    for(MapList<array<long int,N_COLS_IN_MAP>>::iterator iit=map_list.begin(); iit != map_list.end(); ++iit){
-        cout << "Processing map..." << endl;
-
-        updateValues(values, *iit);
-
-        cout << "Map finished" << endl;
+    if(N_ORIGIN_SEEDS % 2 != 0){
+        cout << "Origin seeds must be an even value. Exiting..." << endl;
+        return 1;
     }
 
-    cout << "Finding minimum... " << endl;
-    long int min = values[0];
-    for(int i = 1; i < N_ORIGIN_SEEDS; i++){
-        if(values[i] < min)
-            min = values[i];
+    //Directly proccess values. Too much to be stored
+    int N_TOTAL_SEEDS = 0;
+    for(int i = 0; i < N_ORIGIN_SEEDS; i=i+2){
+        N_TOTAL_SEEDS += values[i+1];
+    }
+
+    long int val = 0;
+    long int min = 0;
+    long int counter = 0;
+    for(int i = 0; i < N_ORIGIN_SEEDS; i=i+2){
+        for(long int n = values[i]; n < values[i]+values[i+1]; n++){
+            val = n;
+            for(MapList<array<long int,N_COLS_IN_MAP>>::iterator iit=map_list.begin(); iit != map_list.end(); ++iit){
+                //cout << "Processing value for a map..." << endl;
+                val = updateValue(val, *iit);
+            }
+
+            //cout << "Updating minimum..." << endl;
+            if(min == 0 || val < min)
+                min = val;
+            counter++;
+            if(counter % 1000000 == 0)
+                cout << counter << " out of " << N_TOTAL_SEEDS << endl;
+        }
     }
     cout << min << endl;
 
