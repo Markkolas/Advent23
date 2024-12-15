@@ -1,7 +1,7 @@
 #include "../adventbasics.h"
 
 #define N_LINES 2
-#define N_RACES 4
+#define N_RACES 3
 
 int main(int argc, char *argv[]){
     using namespace std;
