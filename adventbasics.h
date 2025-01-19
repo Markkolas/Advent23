@@ -8,6 +8,8 @@ namespace adbasic{
     std::string readInput();
     std::string readTest();
     void getFromConsole(std::string& s);
+    bool loadStrInput(std::string& s, int argc, char *argv[]);
+
     void cleanIndents(std::string& s, std::string r);
     int getNumberLines(std::string & s);
     void textToStrarr(std::string & s, std::string arr[], int arrsize, char separator);

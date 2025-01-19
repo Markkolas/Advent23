@@ -51,6 +51,32 @@ void adbasic::getFromConsole(string& s){
     return;
 }
 
+bool adbasic::loadStrInput(std::string& s, int argc, char *argv[]){
+    if(argc == 1){
+        cout << "Specify argument.\n"
+             << "0: From console\n"
+             << "1: From 'test.txt' file\n"
+             << "2: From 'input.txt' file" << endl;
+
+        return false;
+    }
+    if(*argv[1] == '0')
+        adbasic::getFromConsole(s);
+    else if(*argv[1] == '1')
+        s = adbasic::readTest();
+    else if(*argv[1] == '2')
+        s = adbasic::readInput();
+    else{
+        cout << "Wrong argument, exiting..." << endl;
+        return false;
+    }
+
+    if(s.back() != '\n')
+        s = s + "\n";
+
+    return true;
+}
+
 void adbasic::cleanIndents(string& s, string r){
     size_t i = s.find("\n");
     while(i != string::npos){
@@ -118,7 +144,7 @@ void adbasic::stoiNumbersBySpaces(string & s, int num_list[], int n_numbers){
             //cout << s.substr(index_of_prev_space+1, len) << endl;
             //cout << "Prev space at: " << index_of_prev_space << endl;
             //cout << "Next space at: " << index_of_next_space << endl;
-            num_list[num_index++] = stol(s.substr(index_of_prev_space+1, len));
+            num_list[num_index++] = stoi(s.substr(index_of_prev_space+1, len));
         }
 
         index_of_prev_space = index_of_next_space;
