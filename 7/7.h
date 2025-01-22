@@ -2,7 +2,7 @@
 const char CARDS[13] = {'2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'};
 
 struct Poker_Tuple{
-    char hand[5];
+    char hand[6];
     int bid;
 
     Poker_Tuple(std::string& tuple);
@@ -16,6 +16,7 @@ bool hasThree(Poker_Tuple&);
 bool hasDoubleTwo(Poker_Tuple&);
 bool hasTwo(Poker_Tuple&);
 
-bool handComparator(Poker_Tuple* t1, Poker_Tuple* t2);
+char transformCard(char);
+bool handComparator(Poker_Tuple*, Poker_Tuple*);
 
 int nCharsOfA(char hand[5], char c);
