@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <array>
+#include <list>
 #include <sstream>
 
 namespace adbasic{
@@ -18,6 +19,7 @@ namespace adbasic{
     void stolNumbersBySpaces(std::string & s, std::array<long int,N> & num_list);
 
     void stoiNumbersBySpaces(std::string & s, int num_list[], int n_numbers);
+    void stoiAllNumbersBySpaces(std::string & s, std::list<int> & l);
 
     //OBSOLETE
     void stolNumbersBySpaces(std::string & s, long int num_list[], int n_numbers);

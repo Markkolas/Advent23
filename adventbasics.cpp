@@ -152,6 +152,36 @@ void adbasic::stoiNumbersBySpaces(string & s, int num_list[], int n_numbers){
     }
 }
 
+void adbasic::stoiAllNumbersBySpaces(std::string &s, std::list<int> &l){
+    int index_of_next_space = 0, index_of_prev_space = 0;
+    string s_num;
+
+    if(s.back() != ' ')
+        s = s+" ";
+
+    if(s.front() != ' ')
+        s = " "+s;
+
+    index_of_next_space = s.find(' ', 1); //First char will always be a space
+
+    // cout << "Converting: " << s << endl;
+    // cout << "Of size: " << s.size() << endl;
+    while(index_of_next_space < s.size()){
+        int len = index_of_next_space - index_of_prev_space - 1;
+        if(len > 0){
+            //Dont get two contiguous spaces
+            // cout << "Converting index:" << num_index << endl;
+            // cout << s.substr(index_of_prev_space+1, len) << endl;
+            // cout << "Prev space at: " << index_of_prev_space << endl;
+            // cout << "Next space at: " << index_of_next_space << endl;
+            l.push_back(stoi(s.substr(index_of_prev_space+1, len)));
+        }
+
+        index_of_prev_space = index_of_next_space;
+        index_of_next_space = s.find(' ', index_of_next_space + 1);
+    }
+}
+
 // void adbasic::stolNumbersBySpaces(string & s, array<T,N>) See the .h
 // OBSOLETE
 void adbasic::stolNumbersBySpaces(string & s, long int num_list[], int n_numbers){
