@@ -2,12 +2,14 @@
 
 #include <memory>
 
-struct history{
+struct History{
     std::list<int> hist;
-    std::unique_ptr<history> diffs;
+    std::shared_ptr<History> diffs;
 
-    history(std::string & s);
-    history(std::list<int> & l);
+    History(std::string & s);
+    History(std::list<int> & l);
+    History(const History& h);
 
     bool calcDiffs(std::list<int> & l);
+    void calcNext();
 };
