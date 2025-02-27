@@ -11,5 +11,6 @@ struct History{
     History(const History& h);
 
     bool calcDiffs(std::list<int> & l);
+    void calcPrev();
     void calcNext();
 };
