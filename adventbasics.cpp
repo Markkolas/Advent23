@@ -121,6 +121,17 @@ void adbasic::textToStrarr(string & s, string arr[], int arrsize, char separator
     }
 }
 
+int adbasic::getMaxLen(std::string arr[], int arrsize){
+    int len = 0, max_len = 0;
+    for(int i = 0; i < arrsize; i++){
+        len = arr[i].length();
+        if(len > max_len)
+            max_len = len;
+    }
+
+    return max_len;
+}
+
 // A bit brutal, but I prefer to have functions with different names
 // rather than one with a template
 void adbasic::stoiNumbersBySpaces(string & s, int num_list[], int n_numbers){

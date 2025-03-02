@@ -14,6 +14,7 @@ namespace adbasic{
     void cleanIndents(std::string& s, std::string r);
     int getNumberLines(std::string & s);
     void textToStrarr(std::string & s, std::string arr[], int arrsize, char separator);
+    int getMaxLen(std::string arr[], int arrsize);
 
     template<int N>
     void stolNumbersBySpaces(std::string & s, std::array<long int,N> & num_list);

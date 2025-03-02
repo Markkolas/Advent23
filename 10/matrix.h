@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <iostream>
+#include <string>
 
 struct Matrix{
     // A more syntactically simple solution can be archived with a double pointer and
