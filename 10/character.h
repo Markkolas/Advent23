@@ -30,3 +30,11 @@ struct Character{
     int walk(int, int); //Walk and return true if destination
                          //reached
 };
+
+struct Point{
+    int x, y;
+    enum TILES tile;
+
+    Point(int row, int col, TILES t): y{row}, x{col}, tile{t}{};
+    Point(int row, int col): y{row}, x{col}{};
+};
