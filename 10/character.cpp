@@ -2,8 +2,8 @@
 
 Character::Character(Matrix *world){
     map = world;
-    for(int r = 0; r < map->cols; r++){
-        for(int c = 0; c < map->rows; c++){
+    for(int r = 0; r < map->rows; r++){
+        for(int c = 0; c < map->cols; c++){
             TILES tile = static_cast<TILES>((*map)[r][c]);
             if(tile == TILES::CHAR){
                 x = c;
@@ -24,6 +24,8 @@ Character::Character(int initx, int inity, Matrix *world):x{initx}, y{inity}{
 }
 
 bool Character::goNorth(){
+    if(y == 0) return false;
+
     TILES next_tile = static_cast<TILES>((*map)[y-1][x]);
 
     if(next_tile == TILES::N_S || next_tile == TILES::S_W || next_tile == TILES::S_E || next_tile == TILES::CHAR){
@@ -40,6 +42,8 @@ bool Character::goNorth(){
 }
 
 bool Character::goSouth(){
+    if(y == map->rows - 1) return false;
+
     TILES next_tile = static_cast<TILES>((*map)[y+1][x]);
 
     if(next_tile == TILES::N_S || next_tile == TILES::N_E || next_tile == TILES::N_W || next_tile == TILES::CHAR){
@@ -56,6 +60,8 @@ bool Character::goSouth(){
 }
 
 bool Character::goEast(){
+    if(x == map->cols -1) return false;
+
     TILES next_tile = static_cast<TILES>((*map)[y][x+1]);
 
     if(next_tile == TILES::E_W || next_tile == TILES::N_W || next_tile == TILES::S_W || next_tile == TILES::CHAR){
@@ -72,6 +78,8 @@ bool Character::goEast(){
 }
 
 bool Character::goWest(){
+    if(x == 0) return false;
+
     TILES next_tile = static_cast<TILES>((*map)[y][x-1]);
 
     if(next_tile == TILES::E_W || next_tile == TILES::N_E || next_tile == TILES::S_E || next_tile == TILES::CHAR){
