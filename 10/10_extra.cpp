@@ -12,12 +12,20 @@ int searchInDir(Matrix& m, Point& org, Point& norm_dir, char c){
     int result = 0;
 
     while(searchy >= 0 && searchy < m.rows &&
-          searchx >= 0 && searchx < m.cols &&
-          m[searchy][searchx] == '.'){
-        m[searchy][searchx] = c;
-        result++;
-        searchx += norm_dir.x;
-        searchy += norm_dir.y;
+          searchx >= 0 && searchx < m.cols){
+        if(m[searchy][searchx] == '.'){
+            m[searchy][searchx] = c;
+            result++;
+            searchx += norm_dir.x;
+            searchy += norm_dir.y;
+        }
+        else if(m[searchy][searchx] == c){
+            searchx += norm_dir.x;
+            searchy += norm_dir.y;
+        }
+        else{
+            break;
+        }
     }
 
     return result;
@@ -142,6 +150,8 @@ int main(int argc, char *argv[]){
             cout << extr_map[y][x];
         }
     }
+
+    cout << endl;
 
     //cout << "\nFound " << n_inners << " inner points!" << endl;
 }
