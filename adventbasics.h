@@ -24,6 +24,19 @@ namespace adbasic{
 
     //OBSOLETE
     void stolNumbersBySpaces(std::string & s, long int num_list[], int n_numbers);
+
+    //Point struct with inline definitions
+    struct Point{
+        int p[2];
+        Point(int y, int x): p{y,x}{}
+        Point(const Point& point): p{point.p[0], point.p[1]}{}
+
+        inline bool operator==(const Point& other){
+            return (p[0] == other.p[0]) && (p[1] == other.p[1]);
+        }
+
+        inline bool operator!=(const Point& other){return !(*this==other);}
+    };
 }
 
 //Unfortunetly, most compilers dont support having templated definitions
