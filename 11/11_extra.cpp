@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int calcResult(vector<adbasic::Point> &GPoints){
+long calcResult(vector<adbasic::Point> &GPoints){
     using adbasic::Point;
     int i = 0;
     long result = 0;
@@ -15,11 +15,11 @@ int calcResult(vector<adbasic::Point> &GPoints){
         for(vector<Point>::iterator g2t = g1t;
             g2t != GPoints.end(); ++g2t){
 
-            cout << "D to (" << (*g2t).p[0] << "," << (*g2t).p[1] << "): ";
-            long incry = abs((*g2t).p[0]-(*g1t).p[0]);
-            long incrx = abs((*g2t).p[1]-(*g1t).p[1]);
+            //cout << "D to (" << (*g2t).p[0] << "," << (*g2t).p[1] << "): ";
+            long incry = labs((*g2t).p[0]-(*g1t).p[0]);
+            long incrx = labs((*g2t).p[1]-(*g1t).p[1]);
 
-            cout << long(incrx+incry) << endl;
+            //cout << "Sum of distances: "<< long(incrx+incry) << endl;
             result += long(incrx + incry);
         }
 
@@ -50,7 +50,7 @@ void correctSpaceTime(vector<adbasic::Point>& GPoints, std::string arr[], int ar
         if(!GalaxyDetected){
             cout << "No galaxies on row: " << y << endl;
             for(int i = 0; i < GPoints.size(); i++){
-                if(GPoints[i].p[0] > y) GPoints_corrected[i].p[0] += 100-1;
+                if(GPoints[i].p[0] > y) GPoints_corrected[i].p[0] += 1000000-1;
             }
         }
     }
@@ -68,7 +68,7 @@ void correctSpaceTime(vector<adbasic::Point>& GPoints, std::string arr[], int ar
         if(!GalaxyDetected){
             cout << "No galaxies on col: " << x << endl;
             for(int i = 0; i < GPoints.size(); i++){
-                if(GPoints[i].p[1] > x) GPoints_corrected[i].p[1] += 100-1;
+                if(GPoints[i].p[1] > x) GPoints_corrected[i].p[1] += 1000000-1;
             }
         }
     }
@@ -116,6 +116,6 @@ int main(int argc, char *argv[]){
     // }
 
     //Find distances for all pairs
-    int res = calcResult(GPoints);
+    long res = calcResult(GPoints);
     cout << "Sum of all distances: " << res << endl;
 }
